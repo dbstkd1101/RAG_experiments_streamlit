@@ -1,8 +1,45 @@
 import os
 import streamlit as st
-from langchain_openai import ChatOpenAI
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain.document_loaders import PyPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_chroma import Chroma
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
 
 os.environ["OPENAI_API_KEY"] = "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"
+
+#PDF 파일 로드 및 분할
+@st.cache_resource
+def load_and_split_pdf(pdf_path):
+    loader = PyPDFLoader(pdf_path)
+    return loader.load_and_split()
+
+@st.cache_resource
+def create_vector_store(docs):
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+    split_docs = text_splitter.split_documents(docs)
+    persist_directory = "./chroma_db"
+    vectorstore = Chroma.from_documents(
+        split_docs,
+        OpenAIEmbeddings(model = 'text-embedding-3-small'),
+        persist_directory=persist_directory
+    )
+    return vectorstore
+
+#만약 기존에 저장해둔 CrhomaDB가 잇는 경우, 이를 로드
+def get_vector_store(_docs):
+    persist_directory = "./chroma_db"
+    if os.path.exists(persist_directory):
+        return Chroma(persist_directory=persist_directory, embedding_function=OpenAIEmbeddings(model = 'text-embedding-3-small'))
+    else:
+        return create_vector_store(_docs)
+
+#Document 객체의 page_content를 Join
+def format_docs(docs):
+    return "\n".join([doc.page_content for doc in docs])
+
 
 st.title("💬 Chatbot")
 
