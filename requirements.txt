@@ -7,4 +7,4 @@ langchain-chroma
 langchain-text-splitters
 pysqlite3-binary
 pypdf
-protobuf
+protobuf==3.19.0
