@@ -10,7 +10,13 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 import tempfile
 
-os.environ["OPENAI_API_KEY"] = "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"
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
+from langchain_chroma import Chroma
+# os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = st.secrets['OPENAI_API_KEY']
 
 
 #PDF 파일 로드 및 분할
