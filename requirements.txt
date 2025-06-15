@@ -1,10 +1,9 @@
 streamlit
 langchain
-langchain_community
-langchain_openai
-langchain_core
-langchain_chroma
+langchain-community
+langchain-openai
+langchain-core
+langchain-chroma
 pysqlite3-binary
 pypdf
-langchain_text_splitters 
-tempfile
+langchain-text-splitters
