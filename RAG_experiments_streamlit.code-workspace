@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"name": "RAG_experiments_streamlit",
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.languageServer": "Pylance"
+	}
+}
