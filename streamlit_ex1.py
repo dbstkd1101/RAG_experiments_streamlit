@@ -18,7 +18,7 @@ from langchain_chroma import Chroma
 # os.environ["OPENAI_API_KEY"] = "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"
 os.environ["OPENAI_API_KEY"] = st.secrets['OPENAI_API_KEY']
 
-
+ 
 #PDF 파일 로드 및 분할
 @st.cache_resource
 def load_and_split_pdf(pdf_path):
@@ -89,7 +89,7 @@ def chaining(_pages):
         ]
     )
 
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatOpenAI(model="gpt-4o", temperature=0, organization="org-c2WVGDwvD7jZK4vyKCoWvSuB")
     rag_chain = (
         {"context": retriever | format_docs, "input": RunnablePassthrough()}
         | qa_prompt
